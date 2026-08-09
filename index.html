@@ -1,10 +1,539 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="utf-8">
-        <title>Kuproxnpp</title>
-    </head>
-    <body>
-        <h1>Kuproxnpp</h1>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuproxnpp 公式サイト</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #0ea5e9;
+            --bg-main: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+        }
+
+        .header-logo img {
+            height: 38px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .header-logo h1 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.025em;
+        }
+
+        nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.925rem;
+            padding: 0.5rem 0.875rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            color: var(--primary);
+            background-color: rgba(79, 70, 229, 0.06);
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+            color: white;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, rgba(255,255,255,0.15), transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero img {
+            height: 72px;
+            width: auto;
+            margin-bottom: 1.25rem;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0 0 0.75rem 0;
+            letter-spacing: -0.03em;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            opacity: 0.95;
+            margin: 0;
+            font-weight: 400;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        section:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.75rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            section {
+                padding: 1.5rem;
+            }
+        }
+
+        .iframe-wrapper {
+            margin-top: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+        }
+
+        iframe {
+            width: 100%;
+            height: 280px;
+            border: none;
+            display: block;
+            overflow: hidden;
+        }
+
+        ul {
+            padding-left: 1.25rem;
+            color: var(--text-main);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: #334155;
+        }
+
+        strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            background-color: #f1f5f9;
+            color: var(--primary);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-size: 0.875em;
+        }
+
+        .faq-item {
+            background-color: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .faq-item:hover {
+            border-color: #cbd5e1;
+        }
+
+        .faq-q {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.05rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .faq-a {
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .news-box {
+            background: #f8fafc;
+            border-left: 4px solid var(--primary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin-bottom: 1.25rem;
+            border-top: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .news-box h4 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .archive-box {
+            max-height: 260px;
+            overflow-y: auto;
+            background: #0f172a;
+            color: #38bdf8;
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        details {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        details[open] {
+            background: #ffffff;
+            border-color: #cbd5e1;
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--secondary);
+            font-size: 1.05rem;
+            user-select: none;
+            outline: none;
+        }
+
+        details[open] summary {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 0.75rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-logo">
+            <img src="https://files.catbox.moe/kmgoer.png" alt="Kuproxnpp Logo">
+            <h1>Kuproxnpp</h1>
+        </div>
+        <nav>
+            <a href="#about">概要</a>
+            <a href="#stats">統計・ランキング</a>
+            <a href="#news">NEWS</a>
+            <a href="#faq">よくある質問</a>
+            <a href="#terms">規約・ポリシー</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <img src="https://files.catbox.moe/kmgoer.png" alt="Kuproxnpp Logo">
+            <h2>Kuproxnpp</h2>
+            <p>SPK総合チームなどを総括する超巨大サービス管轄チーム</p>
+        </div>
+
+        <!-- About Section -->
+        <section id="about">
+            <h3>Kuproxnppとは？</h3>
+            <p>
+                Kuprpxnpp（クプロックスエヌピーピー）とは、<strong>2025年3月18日 17:56</strong>に創設された、サービス管轄チームです。
+            </p>
+            <p>
+                2024年6月14日に誕生した「8ch（ハッチャンネル）」というサービス（第四次委員会活動という別名からスタートしBBSシステムを展開）を発端としています。サービスが拡大するにつれて、8chを管轄する「Sleave」、HP移行用チームの「Poslit」「Kavepope」、それを管轄する「SPK」、そして全体を統括する「Kuproxnpp」が誕生し、委員会活動などを吸収して現在の形に至りました。
+            </p>
+            
+            <h4>組織の系統</h4>
+            <ul>
+                <li><strong>純系：</strong>Kuproxnppが直接管理・作成・公開・運営する公営サービス（例: KuproxnppService, KuproxnppAds 等）</li>
+                <li><strong>直系：</strong>suzuzora-team、SPKなど</li>
+                <li><strong>中枢系：</strong>Free-Explore、Ordenentなど</li>
+                <li><strong>末梢系：</strong>music-idea2など</li>
+            </ul>
+            <p>※明確な区分理由はなく、純系以外における系統間の差はほとんどありません。</p>
+
+            <h4>Kuproxnppの真髄</h4>
+            <p>
+                Kuproxnppは「共同で、より良いwebを作り上げていく」という構想のもと成立したチームです。基本的に厳格な制約を課すつもりはなく、yu-digitalなどのサイトも独自の運営体制を持っています。当チームが干渉するのは、アクセスカウンターなどの技術提供や、サービス側からの要望時のみです。
+            </p>
+            <p>
+                将来的に共通ポイントやアカウントを整備予定ですが、傘下独自のシステム・体制を維持しながら、「連携」という形の「任意的」なものとなっています。規約において民主的な選挙のフォーム指定や、検討命令・情報提供命令といった仕組みはありますが、「縛ってやらせる」のではなく「互いにやる」関係性を重視しています。
+            </p>
+
+            <h4>傘下メンバー (2025 Members)</h4>
+            <p>suzuzora / harezora / sosu / yu / H.S. / oonori / OOFPHHPS / yonetuniki / I love sima iland / koa / yuuki / kouki / しゅうまい</p>
+        </section>
+
+        <!-- Stats & Rankings Section -->
+        <section id="stats">
+            <h3>アクセス総数・ランキング</h3>
+            <div class="grid-2">
+                <div>
+                    <h4>アクセス総数</h4>
+                    <div class="iframe-wrapper">
+                        <iframe src="https://script.google.com/macros/s/AKfycby9Ql4eWIt2_N5B4ti9NuPhU9w9FP1tdLCk1UKxSDnLFPdNMGKSnHds9SlxwH1TlknE/exec" title="アクセス総数" scrolling="no"></iframe>
+                    </div>
+                </div>
+                <div>
+                    <h4>ランキング</h4>
+                    <div class="iframe-wrapper">
+                        <iframe src="https://script.google.com/macros/s/AKfycbx1x3dn5SYaU_gPzKqEV4PrmDI-tWS5QF19QgWaHKlVtt6dSiiY6X0iqHHqGUKJZvQy/exec" title="ランキング" scrolling="no"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 1.5rem;">
+                <h4>傘下一覧</h4>
+                <div class="iframe-wrapper">
+                    <iframe src="https://script.google.com/macros/s/AKfycby-edku_eV2iMEyQmvhD1SzVo__M-Eah22ZngYUsWk_-wXtl2xVH3vrNgpPpMZ4b5ufmA/exec" title="傘下一覧" scrolling="no"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section id="news">
+            <h3>NEWS</h3>
+            
+            <div class="news-box">
+                <h4>サービス併合について</h4>
+                <p>KuproxnppNewsをKuproxnppHPに統合いたしました。</p>
+            </div>
+
+            <div class="news-box">
+                <h4>サービス再編・改造について</h4>
+                <p>平素より、Kuproxnppをご利用いただきまして、ありがとうございます。チームの大規模改善のための取り組みを実施している関係で、一部サービスの併合および再編を行いました。</p>
+                <p><strong>合計42サービスへ再編されました。</strong>主な変更点として、<code>harezora-team</code> が <code>team-harezora</code> へ名称変更され、<code>suzu8-team</code> が新設されました。（その他多数の個別サービスは終了・統合となりました）</p>
+            </div>
+
+            <div class="news-box">
+                <h4>2025年大賞がいよいよ発表！！！</h4>
+                <p>2025年度の大賞発表をお楽しみに！</p>
+            </div>
+
+            <h4>---↓Archive（SPK_Courthouse等）↓---</h4>
+            <div class="archive-box">
+[SPK_Courthouse 概要]
+SPK内でおきたことに対する最終処置を行います。ステージは5段階。
+[Stage1](Level5) yu事件 - 原告: suzuzora / 被告: yu -> 判決: 重大な過失。再発防止を求める。
+[Stage1](Level5) yu-Digital事件 - 原告: suzuzora / 被告: yu -> 判決: 重大な過失。選挙規約の早期作成、それまでYu-digitalから追放。
+[Stage1](Level7) suzuzora汚職事件 - 原告: SPK / 被告: suzuzora -> 判決: 重大な過失。2週間のオーナー権限の剥奪
+[Stage3](Level7) suzuzora汚職事件（再審査請求） -> 判決: 重大な過失。酌量措置で執行猶予1週間、オーナー権限剥奪2ヶ月
+[Stage5](Level7) suzuzora汚職事件（再審査請求） -> 判決: 重大な過失。酌量措置で執行猶予2週間、オーナー権限剥奪2ヶ月
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq">
+            <h3>よくある質問</h3>
+            <div class="faq-item">
+                <div class="faq-q">Q. 規約は？</div>
+                <div class="faq-a">それぞれのチームの規約を遵守してください。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Q. 傘下サイトは？</div>
+                <div class="faq-a">主に、SPKなどです。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Q. 代表は？</div>
+                <div class="faq-a">代表（オーナー）は、suzuzora、副代表はharezoraです。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Q. 創設者は？</div>
+                <div class="faq-a">suzuzoraです。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Q. 創設はいつ？</div>
+                <div class="faq-a">2025年3月18日、17:56です。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Q. ロゴの制作者は？</div>
+                <div class="faq-a">suzuzoraです。</div>
+            </div>
+        </section>
+
+        <!-- Terms & Policies Section -->
+        <section id="terms">
+            <h3>規約・ポリシー関連</h3>
+            
+            <details>
+                <summary>利用規約 (ver1.0)</summary>
+                <p><strong>前提：</strong>本規約は、Kuproxnppが所属するウェブサイト上で提供するサービスの基礎となる利用条件を定めるものです。時間は日本標準時とします。</p>
+                <p><strong>第一条（適用）：</strong>本規約はユーザーと当チームの間の一切の関係に適用されます。</p>
+                <p><strong>第二条（禁止事項）：</strong>法令違反、犯罪行為、知的財産権の侵害、無許可の商業活動・宣伝、運営妨害（DDos、F5アタック、自動取得等）、反社会的勢力の関与などを禁止します。</p>
+                <p><strong>第三条〜第十四条：</strong>サービスの停止、利用料金、利用制限（反社会的勢力の利用禁止およびBAN等）、退会、免責事項、規約変更、個人情報の取扱い、準拠法（日本法）および裁判管轄、知的財産権（投稿物の権利譲渡等）について定めています。</p>
+                <p><em>発布: 2026年8月27日 / 施行: 2026年9月3日 / 制作: suzuzora</em></p>
+            </details>
+
+            <details>
+                <summary>プライバシーポリシー</summary>
+                <p>セキュリティ維持のため、IPアドレスおよびユーザー識別情報を取得します。利用目的は荒らし行為・不正アクセスの防止、公的機関からの要請対応です。広告として忍者ツールズ株式会社（忍者AdMax等）を利用しています。</p>
+                <p><em>発布: 2026年8月27日 / 施行: 2026年9月3日</em></p>
+            </details>
+
+            <details>
+                <summary>ガイドライン</summary>
+                <p>児童ポルノ、合意のない性的行為、わいせつコンテンツ、著しい猟奇的暴力、犯罪助長、自殺・自傷勧誘、リベンジポルノ、その他運営側が不適切と判断するR18+指定相当のコンテンツを一切禁止します。</p>
+                <p><em>発布: 2026年8月27日 / 施行: 2026年9月3日</em></p>
+            </details>
+
+            <details>
+                <summary>チームポリシー</summary>
+                <p>活動理念をもとに活動する。Kuproxnppで、今までGAFAM一強のこのインターネット界隈をこのチームの手で変え、インターネットだけにとどまらずに世界平和を恒久的に保とう。</p>
+                <p><em>発布: 2026年8月27日 / 施行: 2026年9月3日</em></p>
+            </details>
+
+            <details>
+                <summary>活動理念</summary>
+                <p>「インターネットをもっと身近に、もっとあなたのそばへ」</p>
+                <p><em>発布: 2026年8月27日 / 施行: 2026年9月3日</em></p>
+            </details>
+
+            <details>
+                <summary>チーム名・チームロゴ規定</summary>
+                <p>ロゴはsuzuzora制作のものを使用する。チーム名はKuproxnppとし、略称をKPXとKPRの2つとする。</p>
+                <p><em>発布: 2026年8月27日 / 施行: 2026年9月3日</em></p>
+            </details>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; Kuproxnpp All Rights Reserved.</p>
+    </footer>
+
+</body>
 </html>
