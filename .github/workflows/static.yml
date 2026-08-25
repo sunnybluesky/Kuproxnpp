@@ -30,4 +30,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist # ここでdistフォルダを指定
+          publish_dir: ./kupro/dist # ここでdistフォルダを指定
