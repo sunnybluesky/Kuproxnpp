@@ -19,7 +19,7 @@
 }
 @font-face {
   font-family: HinaMincho;
-  src: url("./src/assets/font/HinaMincho-Regular.ttf");
+  src: url("../src/assets/font/HinaMincho-Regular.ttf"); /*カレントディレクトリから指定*/
 }
 html {
   scroll-behavior: smooth;
@@ -123,6 +123,7 @@ nav a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: translateX(-10px);
 }
 
 text.title {
