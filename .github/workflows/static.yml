@@ -1,0 +1,33 @@
+name: Deploy to GitHub Pages (gh-pages branch)
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write # gh-pagesブランチへの書き込み権限を付与
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        # お使いのパッケージマネージャーに合わせて変更してください（例: yarn install, pnpm install）
+        run: npm ci
+
+      - name: Build Astro
+        run: npm run build
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist # ここでdistフォルダを指定
