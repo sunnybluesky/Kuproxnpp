@@ -1,0 +1,223 @@
+---
+import '../../../public/style/account.css';
+---
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login to Harezora-team</title>
+
+    <!-- include only the Firebase features as you need -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hina+Mincho&display=swap"
+      rel="stylesheet"
+    />	
+
+  </head>
+  <body>
+    <main>
+      <h1>Kuproxnppにログイン</h1>
+      <p>また会いましたか？</p>
+      <p>Email</p><input type="email" id="email" />
+      <p>Password</p><input type="password" id="password" />
+      <div id="btn-login" class="btn">メールアドレスでログイン</div>
+      <input type="button" id="btn-logout" class="hidden" value="ログアウト" />
+      <div id="auth-ui">
+        <!-- Google ログインボタン -->
+        <div class="btn-google btn" id="btn-google-login">
+          <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt="Google"
+          />
+          Googleでログイン
+        </div>
+      </div>
+
+      <p>はじめまして？</p>
+      <a href="./signup.html">サインアップ</a>
+      <div id="btn-signup" class="btn hidden">サインアップ</div>
+      <div class="messages">
+        <p id="user-email"></p>
+        <p id="message"></p>
+      </div>
+    </main>
+    <script>
+      localStorage.ref = document.referrer;
+      if (
+        localStorage.ref == location.href ||
+        localStorage.ref == new URL("./signup.html", window.location.href).href
+      ) {
+        localStorage.ref = null;
+      }
+      console.log("ref: " + localStorage.ref);
+    </script>
+    <script type="module">
+      const SPREADSHEET_ID = "192lM-4XxkDJF-TYhRFnKteMbqhgwcPyKIYnASHIl7ME";
+      const API_KEY = "AIzaSyCmVA13zyYwNurVKsDCWuSczupgyy5jza4";
+      const RANGE = "Sheet1!A1:E10000"; // 取得したい範囲
+      async function getSheetData() {
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+          localStorage.setItem("cacheSheet", JSON.stringify(data.values));
+          console.log(data.values); // 二次元配列でデータが入っています
+          window.userSheetData = data.values;
+        } catch (error) {
+          console.error("エラー:", error);
+        }
+      }
+
+      if (localStorage.getItem("TimeOfGettingSheetData") == null) {
+        getSheetData();
+        localStorage.setItem("TimeOfGettingSheetData", new Date().getTime());
+      } else {
+        var past = new Date(
+          Number(localStorage.getItem("TimeOfGettingSheetData")),
+        ).getTime();
+        var now = new Date().getTime();
+        if (now - past > 60 * 1000) {
+          getSheetData();
+          localStorage.setItem("TimeOfGettingSheetData", new Date().getTime());
+        } else {
+          console.log(
+            "前回の更新から一分以内のため、localStorageからシートのデータを取得しました。",
+          );
+          var str = localStorage.getItem("cacheSheet");
+          window.userSheetData = JSON.parse(str);
+        }
+      }
+
+      const writeToSheet = async function (UUID, name) {
+        const url =
+          "https://script.google.com/macros/s/AKfycbyzLEKPyZv1s3FA1kEJrNL03xd4MZH1qIL58d24B5jTrnuAf1np8ss6fFoWM_2vvmxH/exec";
+
+        const data = {
+          name: name,
+          UUID: UUID,
+        };
+
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            mode: "no-cors", // 重要：GASはCORSエラーが出やすいため no-cors を指定
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+          console.log("送信完了しました（no-cors）");
+        } catch (error) {
+          console.error("エラー:", error);
+          alert("送信に失敗しました");
+        }
+      };
+
+      // Firebase SDKの読み込み (CDN)
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        signOut,
+        onAuthStateChanged,
+        signInWithPopup, // ポップアップでログイン
+        GoogleAuthProvider, // Google用プロバイダ
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCKnMLJyGl1v7BbQA2lR9SFXtYinHcpuoU",
+        authDomain: "harezorateam-accountsystem.firebaseapp.com",
+        projectId: "harezorateam-accountsystem",
+        storageBucket: "harezorateam-accountsystem.firebasestorage.app",
+        messagingSenderId: "185434545268",
+        appId: "1:185434545268:web:8edb9bb3d595981e698521",
+        measurementId: "G-HR5HD0JH0Q",
+      }; // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider(); // Googleプロバイダの初期化
+
+      const emailEl = document.getElementById("email");
+      const passwordEl = document.getElementById("password");
+      const messageEl = document.getElementById("message");
+      const userEmailEl = document.getElementById("user-email");
+
+      // --- 2. ログイン状態の監視 ---
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // ログイン時
+          userEmailEl.innerText = user.email;
+          messageEl.innerText = "ログインしました。";
+          if (localStorage.ref != "null") {
+            alert("ログイン状態です。元のページに戻ります。");
+            location.href = localStorage.ref;
+          }
+        } else {
+          // ログアウト時
+          userEmailEl.innerText = "";
+          messageEl.innerText = "ログアウト状態です。";
+        }
+      });
+
+      // --- 3. 新規登録処理 ---
+      document
+        .getElementById("btn-signup")
+        .addEventListener("click", async () => {
+          try {
+            await createUserWithEmailAndPassword(
+              auth,
+              emailEl.value,
+              passwordEl.value,
+            );
+            alert("登録に成功しました！");
+          } catch (error) {
+            messageEl.innerText = "エラー: " + error.message;
+          }
+        });
+
+      // --- 4. ログイン処理 ---
+      document
+        .getElementById("btn-login")
+        .addEventListener("click", async () => {
+          try {
+            await signInWithEmailAndPassword(
+              auth,
+              emailEl.value,
+              passwordEl.value,
+            );
+          } catch (error) {
+            messageEl.innerText = "エラー: " + error.message;
+          }
+        });
+
+      document
+        .getElementById("btn-google-login")
+        .addEventListener("click", async () => {
+          try {
+            // ポップアップウィンドウを表示してログイン
+            const result = await signInWithPopup(auth, provider);
+
+            const user = result.user;
+            console.log("ユーザー情報:", user);
+            messageEl.innerText = "ログイン成功: " + user.displayName;
+            writeToSheet(user.uid, user.displayName);
+          } catch (error) {
+            console.error("エラー:", error);
+            messageEl.innerText = "エラーが発生しました: " + error.message;
+          }
+        });
+
+      // --- 5. ログアウト処理 ---
+      document
+        .getElementById("btn-logout")
+        .addEventListener("click", async () => {
+          await signOut(auth);
+        });
+    </script>
+  </body>
+</html>

@@ -5,10 +5,23 @@
                 <h1>Kuproxnpp</h1>
             </div>
             <nav>
-                <a href="#about">概要</a>
-                <a href="#stats">統計・ランキング</a>
-                <a href="#news">NEWS</a>
-                <a href="#faq">よくある質問</a>
-                <a href="#terms">規約・ポリシー</a>
+                <div class="notLogined">
+                    <a href="https://harezorateam-accountsystem.web.app/account/login.html">ログイン</a>
+                </div>
+                <div class="Logined flex login-badge">
+                    <img class="icon">
+                    <span>ようこそ、<span class="username"></span>さん</span>
+                    
+                </div>
             </nav>
         </header>
+        <style>
+            .Logined{
+                display: none;
+            }
+            .icon{
+                height: 30px;
+                margin-right: 10px;
+                border-radius: 10px;
+            }
+        </style>

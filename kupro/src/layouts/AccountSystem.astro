@@ -1,0 +1,97 @@
+        <script type="module">
+    // Firebase SDKの読み込み (CDN)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { 
+        getAuth, 
+        createUserWithEmailAndPassword, 
+        signInWithEmailAndPassword, 
+        signOut, 
+        onAuthStateChanged,
+        signInWithPopup,      // ポップアップでログイン
+        GoogleAuthProvider,   // Google用プロバイダ
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyCKnMLJyGl1v7BbQA2lR9SFXtYinHcpuoU",
+    authDomain: "harezorateam-accountsystem.firebaseapp.com",
+    projectId: "harezorateam-accountsystem",
+    storageBucket: "harezorateam-accountsystem.firebasestorage.app",
+    messagingSenderId: "185434545268",
+    appId: "1:185434545268:web:8edb9bb3d595981e698521",
+    measurementId: "G-HR5HD0JH0Q"
+  };// Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+      const provider = new GoogleAuthProvider(); // Googleプロバイダの初期化
+
+    // --- 2. ログイン状態の監視 ---
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // ログイン時
+            console.log("ログインしてます。")    
+            console.log(user)        
+            for(var el of document.querySelectorAll(".notLogined")){
+                el.style.display = "none"
+            }
+            for(var el of document.querySelectorAll(".Logined")){
+                el.style.display = "block"
+            }
+            var el = document.querySelector(".login-badge")
+            el.style.display = "flex"
+            el.querySelector("img").src = user.photoURL
+            el.querySelector(".username").textContent = user.displayName
+        } else {
+            console.log("ログインしてません。")            
+        }
+    });
+/*
+
+    // --- 3. 新規登録処理 ---
+    document.getElementById('btn-signup').addEventListener('click', async () => {
+        try {
+            await createUserWithEmailAndPassword(auth, emailEl.value, passwordEl.value);
+            alert("登録に成功しました！");
+            location.href = "./login.html"
+
+        } catch (error) {
+            messageEl.innerText = "エラー: " + error.message;
+        }
+    });
+
+    // --- 4. ログイン処理 ---
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        try {
+            await signInWithEmailAndPassword(auth, emailEl.value, passwordEl.value);
+        } catch (error) {
+            messageEl.innerText = "エラー: " + error.message;
+        }
+    });
+    document.getElementById('btn-google-login').addEventListener('click', async () => {
+        try {
+            // ポップアップウィンドウを表示してログイン
+            const result = await signInWithPopup(auth, provider);
+            
+            // ログインに成功すると、ここからユーザー情報にアクセスできます
+            const user = result.user;
+            console.log("ユーザー情報:", user);
+
+            messageEl.innerText = "ログイン成功: " + user.displayName;
+
+        } catch (error) {
+            console.error("エラー:", error);
+            messageEl.innerText = "エラーが発生しました: " + error.message;
+        }
+    });
+*/
+
+
+    /*/ --- 5. ログアウト処理 ---
+    document.getElementById('btn-logout').addEventListener('click', async () => {
+        await signOut(auth);
+    });
+*/
+
+
+</script>

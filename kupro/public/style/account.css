@@ -1,0 +1,95 @@
+
+:root {
+  --bg-color: #ffffff;
+  --text-color-1: #000000;
+  --highlight-color-1: #fbfffb;
+  --highlight-color-2: #eeffee;
+  --border-color: #ddd;
+
+  --default-font: "Bananaslip";
+
+  --login-box-size: 600px;
+}
+
+@font-face {
+  font-family: "Anzumoji";
+  src: url("../assets/font/AP.ttf");
+}
+
+@font-face {
+  font-family: "Bananaslip";
+  src: url("../../src/assets/font/YDWbananaslipplus.otf");
+}
+
+body {
+  width: calc(100% - 1px);
+  background-color: var(--bg-color);
+  color: var(--text-color-1);
+  font-family: var(--default-font);
+  text-align: center;
+}
+
+div {
+  font-family: inherit;
+}
+
+h1 {
+  margin: 0;
+}
+
+input {
+  font-family: inherit;
+  padding: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+header > img {
+  height: 100px;
+}
+
+main {
+  position: fixed;
+  left: calc((100% - var(--login-box-size)) / 2);
+  width: var(--login-box-size);
+  max-width: var(--login-box-size);
+  margin-top: 20px;
+  padding: 20px;
+  text-align: left;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+}
+
+.btn {
+  max-width: fit-content;
+  margin-top: 5px;
+  padding: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+#btn-google-login {
+  display: flex;
+  line-height: 30px;
+  background-color: var(--highlight-color-1);
+}
+
+#btn-google-login > img {
+  width: 30px;
+  padding-right: 10px;
+}
+
+#password {
+  font-family: serif;
+}
+
+.messages {
+  width: fit-content;
+  padding: 0 10px;
+  background-color: var(--highlight-color-2);
+  border-radius: 10px;
+}
+
+.hidden {
+  display: none;
+}
