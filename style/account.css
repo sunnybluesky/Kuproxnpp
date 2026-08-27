@@ -93,3 +93,55 @@ main {
 .hidden {
   display: none;
 }
+
+/* =========================================
+   スマートフォン用レスポンシブ設定 (768px以下)
+   ========================================= */
+@media screen and (max-width: 768px) {
+  :root {
+    /* スマホ画面に合わせてログインボックスの基準サイズを変更 */
+    --login-box-size: 90%;
+  }
+
+  body {
+    /* 横スクロール（横揺れ）を防ぐ */
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  main {
+    /* fixedによる画面端での見切れを防ぐため、通常の配置に戻して中央寄せ */
+    position: relative;
+    left: auto;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 100%;
+    box-sizing: border-box; /* paddingを含めて幅を計算 */
+  }
+
+  header > img {
+    /* スマホではロゴ画像を少し縮小し、画面幅を超えないようにする */
+    height: auto;
+    max-height: 80px;
+    max-width: 90%;
+  }
+
+  input {
+    /* 入力しやすさを向上させるため、入力欄を横幅いっぱいに */
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px; /* タップしやすいように余白を少し増やす */
+  }
+
+  .btn {
+    /* ボタンのタップ領域を広げる */
+    padding: 10px 15px;
+  }
+
+  #btn-google-login {
+    /* ログインボタンを中央揃えにして押しやすくする */
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+}
