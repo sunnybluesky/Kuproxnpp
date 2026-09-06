@@ -1,0 +1,43 @@
+---
+import Header from '../layouts/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import AccountSystem from '../layouts/AccountSystem.astro';
+
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Layout>
+	<link rel="stylesheet" href="./style/LP.css">
+	<Header />
+         <!-- FAQ Section -->
+        <section id="faq">
+            <h3>よくある質問</h3>
+            <div class="faq-item">
+                <div class="faq-q">Q. 規約は？</div>
+                <div class="faq-a">それぞれのチームの規約を遵守してください。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Q. 傘下サイトは？</div>
+                <div class="faq-a">主に、SPKなどです。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Q. 代表は？</div>
+                <div class="faq-a">代表(オーナー)は、suzuzora、副代表はharezoraです。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Q. 創設者は？</div>
+                <div class="faq-a">suzuzoraです。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Q. 創設はいつ？</div>
+                <div class="faq-a">2025年3月18日、17:56です。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Q. ロゴの制作者は？</div>
+                <div class="faq-a">suzuzoraです。</div>
+            </div>
+        </section>
+	<AccountSystem />
+</Layout>

@@ -1,0 +1,69 @@
+---
+import Header from '../layouts/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import AccountSystem from '../layouts/AccountSystem.astro';
+
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Layout>
+	<link rel="stylesheet" href="./style/LP.css">
+	<Header />
+
+
+        <!-- Hero Section -->
+        <div class="hero-container">
+            <div class="hero">
+                <!--    <img src="https://files.catbox.moe/kmgoer.png" alt="Kuproxnpp Logo">    -->
+
+                <div class="svg-container">
+                    <svg viewBox="0 0 1000 200" width="100%" height="60%"
+                        preserveAspectRatio="xMidYMid meet">
+
+                        <text class="back-title" x="50%" y="0%"
+                            text-anchor="middle"
+                            dominant-baseline="central"
+                            font-size="100"
+                            font-weight="bold"
+                            fill="none"
+                            stroke="#dd"
+                            font-style="italic"
+                            stroke-width="3">
+                            404
+                        </text>
+                        <text class="title" x="50%" y="-20%"
+                            text-anchor="middle"
+                            dominant-baseline="central"
+                            font-size="80"
+                            font-weight="bold"
+                            fill="none"
+                            stroke="url(#text-gradient-20deg)"
+                            font-style="italic"
+                            stroke-width="3">
+                            404
+                        </text>
+                        <text x="50%" y="20%"
+                            text-anchor="middle"
+                            dominant-baseline="central"
+                            font-size="20"
+                            fill="#333"
+                            font-family="HinaMincho">
+                            お探しのページは見つかりませんでした。
+                        </text>
+                        <defs>
+                            <!-- 20度回転させたグラデーションを定義 -->
+                            <lineargradient id="text-gradient-20deg"
+                                x1="0%" y1="0%" x2="100%" y2="0%"
+                                gradientTransform="rotate(20)">
+                                <stop offset="0%" stop-color="#221e2e" />
+                                <stop offset="100%" stop-color="#361f24" />
+                            </lineargradient>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+        </div>
+	<AccountSystem />
+</Layout>
