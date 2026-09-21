@@ -1,6 +1,7 @@
 ---
 import Image from "astro/components/Image.astro";
 import Menu from "../assets/menu.svg";
+import Home from "../assets/home.svg";
 ---
 
 <header>
@@ -9,56 +10,75 @@ import Menu from "../assets/menu.svg";
     <h1 id="header-home">Kuproxnpp</h1>
   </div>
   <nav>
+
     <div class="notLogined">
+
       <a href="/account/login/">ログイン</a>
     </div>
+
     <div class="Logined flex login-badge">
+    
       <img class="icon" />
-      <span>ようこそ、<span class="username"></span>さん</span>
+      <span>ようこそ、<span class="username"></span>さん　</span>
+   
+        <img class="home-btn icon" src={Home.src}>
+   
     </div>
+
     <div class="hamburger-btn icon" id="menuToggle" aria-label="メニューを開く">
-      <img src="../../src/assets/menu.svg" class="hamburger" id="js-hamburger"/>
+    
+    
+      <img
+        src={Menu.src}
+        class="hamburger icon"
+        id="js-hamburger"
+      />
     </div>
   </nav>
 
-<!-- ポップアップメニューオーバーレイ -->
-<div class="menu-overlay" id="menuOverlay">
-  <nav class="menu-content">
-    <ul>
-      <li><a href="/">ホーム</a></li>
-      <li><a id="logout-btn">ログアウト</a></li>
-    </ul>
-  </nav>
-</div>
+  <!-- ポップアップメニューオーバーレイ -->
+  <div class="menu-overlay" id="menuOverlay">
+    <nav class="menu-content">
+      <ul>
+        <li><a href="/">ホーム</a></li>
+        <li><a id="logout-btn">ログアウト</a></li>
+      </ul>
+    </nav>
+  </div>
 </header>
-<script>
-    document.querySelector("#header-home").addEventListener("click",()=>{
-        location.href="/"
-    })
-    const menuToggle = document.getElementById('menuToggle');
-const menuOverlay = document.getElementById('menuOverlay');
-const menuLinks = menuOverlay.querySelectorAll('a');
+<script type="text/javascript">
+  document.querySelector(".home-btn").addEventListener("click",()=>{
+    location.href = "/home"
+  })
 
-// メニューの開閉切り替え
-function toggleMenu() {
-  menuToggle.classList.toggle('active');
-  menuOverlay.classList.toggle('active');
-}
 
-// ボタンクリック時のイベント
-menuToggle.addEventListener('click', toggleMenu);
+  document.querySelector("#header-home").addEventListener("click", () => {
+    location.href = "/";
+  });
+  const menuToggle = document.getElementById("menuToggle");
+  const menuOverlay = document.getElementById("menuOverlay");
+  const menuLinks = menuOverlay.querySelectorAll("a");
 
-// 背景領域（オーバーレイ）をクリックした時に閉じる
-menuOverlay.addEventListener('click', (e) => {
-  if (e.target === menuOverlay) {
-    toggleMenu();
+  // メニューの開閉切り替え
+  function toggleMenu() {
+    menuToggle.classList.toggle("active");
+    menuOverlay.classList.toggle("active");
   }
-});
 
-// リンククリック時にメニューを閉じる
-menuLinks.forEach((link) => {
-  link.addEventListener('click', toggleMenu);
-});
+  // ボタンクリック時のイベント
+  menuToggle.addEventListener("click", toggleMenu);
+
+  // 背景領域（オーバーレイ）をクリックした時に閉じる
+  menuOverlay.addEventListener("click", (e) => {
+    if (e.target === menuOverlay) {
+      toggleMenu();
+    }
+  });
+
+  // リンククリック時にメニューを閉じる
+  menuLinks.forEach((link) => {
+    link.addEventListener("click", toggleMenu);
+  });
 </script>
 <style>
   .Logined {
@@ -79,93 +99,100 @@ menuLinks.forEach((link) => {
   }
 </style>
 <style>
-    /* ボタンのスタイル */
-.hamburger-btn {
+  /* ボタンのスタイル */
+  .hamburger {
     z-index: 1000;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-}
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
 
-.hamburger-btn span {
-  width: 24px;
-  height: 2px;
-  background-color: #fff;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
+    margin: 5px;
+    height: 20px;
+  }
 
-/* ボタン開閉時のアニメーション（×印に変化） */
-.hamburger-btn.active span:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
-.hamburger-btn.active span:nth-child(2) {
-  opacity: 0;
-}
-.hamburger-btn.active span:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
-}
+  .hamburger-btn span {
+    width: 24px;
+    height: 2px;
+    background-color: #fff;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+  }
 
-/* ポップアップメニュー（全体を覆うオーバーレイ） */
-.menu-overlay {
-  position: fixed;
-right: 20px;
-top:50px;
-  z-index: 999;
-  display: flex;
-height: 500px;  
-  /* 初期状態は非表示 */
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-}
+  /* ボタン開閉時のアニメーション（×印に変化） */
+  .hamburger-btn.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .hamburger-btn.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger-btn.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
 
-/* ポップアップされるコンテンツ領域 */
-.menu-content {
-  background: #ffffff;
-  padding: 40px;
-  border-radius: 16px;
-  min-width: 280px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  transform: scale(0.9);
-  transition: transform 0.3s ease;
-}
+  /* ポップアップメニュー（全体を覆うオーバーレイ） */
+  .menu-overlay {
+    position: fixed;
+    right: 20px;
+    top: 50px;
+    z-index: 999;
+    display: flex;
+    height: 500px;
+    /* 初期状態は非表示 */
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
+  }
 
-/* アクティブ状態 */
-.menu-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
+  /* ポップアップされるコンテンツ領域 */
+  .menu-content {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    min-width: 280px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
 
-.menu-overlay.active .menu-content {
-  transform: scale(1);
-}
+  /* アクティブ状態 */
+  .menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
 
-/* メニューのリストスタイル */
-.menu-content ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-}
+  .menu-overlay.active .menu-content {
+    transform: scale(1);
+  }
 
-.menu-content li {
-  margin: 16px 0;
-}
+  /* メニューのリストスタイル */
+  .menu-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+  }
 
-.menu-content a {
-  text-decoration: none;
-  color: #333;
-  font-size: 1.125rem;
-  font-weight: 600;
-  transition: color 0.2s ease;
-}
+  .menu-content li {
+    margin: 16px 0;
+  }
 
-.menu-content a:hover {
-  color: #0066ff;
-}
+  .menu-content a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1.125rem;
+    font-weight: 600;
+    transition: color 0.2s ease;
+  }
+
+  .menu-content a:hover {
+    color: #0066ff;
+  }
 </style>

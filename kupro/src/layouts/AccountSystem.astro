@@ -38,7 +38,10 @@
       }
       var el = document.querySelector(".login-badge");
       el.style.display = "flex";
-      el.querySelector("img").src = user.photoURL;
+      setTimeout(()=>{
+      el.querySelector(".icon").src = user.photoURL;
+
+      },100)
       el.querySelector(".username").textContent = user.displayName;
     } else {
       console.log("ログインしてません。");
@@ -85,11 +88,12 @@
 */
 
   //ログアウト
-  const logOutBtn = document.getElementById("btn-logout");
+  const logOutBtn = document.getElementById("logout-btn");
   if (logOutBtn !== null) {
     logOutBtn.addEventListener("click", async () => {
       await signOut(auth);
       alert("ログアウトしました");
+      location.href = "/"
     });
   }
 </script>
