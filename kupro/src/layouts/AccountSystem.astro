@@ -28,8 +28,7 @@
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // ログイン時
-      console.log("ログインしてます。");
-      console.log(user);
+      onFireLoginEvent(user)
       for (var el of document.querySelectorAll(".notLogined")) {
         el.style.display = "none";
       }
@@ -96,4 +95,10 @@
       location.href = "/"
     });
   }
+
+function onFireLoginEvent(data){
+      const event = new CustomEvent('login',{detail:data});
+      document.dispatchEvent(event)
+}
+
 </script>

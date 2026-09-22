@@ -1,0 +1,158 @@
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    --bg-0: #f2f4f4;
+    --bg-card: #ffffff;
+    --line: rgba(18,28,32,0.09);
+    --line-strong: rgba(18,28,32,0.16);
+    --text-0: #14181b;
+    --text-1: #5c6a70;
+    --text-2: #97a3a8;
+
+    --teal: #157a8c;
+    --teal-soft: #e4f1f3;
+    --amber: #a3711f;
+    --amber-soft: #f6ecdb;
+    --moss: #4a6b4f;
+    --moss-soft: #e8efe6;
+    --plum: #6a4f6e;
+    --plum-soft: #f0e7f0;
+
+    --font-display: 'Space Grotesk', 'Hiragino Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg-0);
+    color: var(--text-0);
+    font-family: var(--font-display);
+    padding: 36px 20px 60px;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; }
+
+  /* ---- header ---- */
+  .head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line-strong);
+    margin-bottom: 22px;
+  }
+  .head-id { display: flex; flex-direction: column; gap: 6px; }
+  .head-id .tag {
+    font-size: 12px;
+    color: var(--teal);
+    font-family: var(--font-mono);
+  }
+  .head-id h1 {
+    margin: 0;
+    font-size: 27px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .head-id .sub { font-size: 13px; color: var(--text-1); }
+
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filters button {
+    all: unset;
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: 13px;
+    padding: 7px 13px;
+    border: 1px solid var(--line-strong);
+    color: var(--text-1);
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .filters button.active {
+    background: var(--text-0);
+    color: #fff;
+    border-color: var(--text-0);
+  }
+  .filters button:hover:not(.active) { border-color: var(--teal); color: var(--teal); }
+
+  /* ---- masonry board ---- */
+  .board {
+    column-width: 236px;
+    column-gap: 16px;
+  }
+  .card {
+    break-inside: avoid;
+    display: block;
+    margin: 0 0 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--cat, var(--teal));
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: rise 0.45s ease forwards;
+  }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+  .card-inner { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .card .kind {
+    font-size: 11.5px;
+    color: var(--cat, var(--teal));
+    font-family: var(--font-mono);
+  }
+  .card h2 {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .card p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-1);
+  }
+  .card .meta {
+    margin-top: 2px;
+    font-size: 11.5px;
+    color: var(--text-2);
+    font-family: var(--font-mono);
+  }
+
+  .art { width: 100%; display: block; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+  .chips span {
+    font-size: 11.5px;
+    padding: 3px 9px;
+    background: var(--catsoft, var(--teal-soft));
+    color: var(--cat, var(--teal));
+  }
+
+  .reading {
+    display: flex; align-items: baseline; gap: 5px;
+    font-family: var(--font-mono);
+  }
+  .reading .num { font-size: 30px; font-weight: 500; }
+  .reading .unit { font-size: 13px; color: var(--text-2); }
+
+  .spark path.fill { fill: var(--catsoft, var(--teal-soft)); }
+  .spark path.line { fill: none; stroke: var(--cat, var(--teal)); stroke-width: 1.6; }
+
+  .quote {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-0);
+  }
+
+  @media (max-width: 520px) {
+    .board { column-width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
