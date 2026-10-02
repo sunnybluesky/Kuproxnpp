@@ -1,7 +1,7 @@
 ---
-import Header from '../../layouts/Header.astro';
-import Layout from '../../layouts/Layout.astro';
-import AccountSystem from '../../layouts/AccountSystem.astro';
+import Header from "../../layouts/Header.astro";
+import Layout from "../../layouts/Layout.astro";
+import AccountSystem from "../../layouts/AccountSystem.astro";
 import HomeStyle from "../../../public/style/home.css";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
@@ -9,77 +9,68 @@ import HomeStyle from "../../../public/style/home.css";
 ---
 
 <Layout>
-	<link rel="stylesheet" href="/style/LP.css">
-	<link rel="stylesheet" href={HomeStyle}>
-	<Header />
-	<AccountSystem />
+  <link rel="stylesheet" href="/style/LP.css" />
+  <link rel="stylesheet" href={HomeStyle} />
+  <Header />
+  <AccountSystem />
 
-	
-<div class="wrap">
-
-  <div class="head">
-    <div class="head-id">
-      <h1>ホーム</h1>
-      <span class="sub">すべてのサービスが、ここに。</span>
-    </div>
-    <div class="filters">
-      <button class="active">おすすめ/お気に入り</button>
-      <button>サボりツール</button>
-      <button>ゲーム</button>
-      <button>プロキシ</button>
-      <button>ニュース</button>
-    </div>
-  </div>
-
-  <div class="board">
-    <div class="card" style="--cat:#4a6b4f; --catsoft:#eeeeee;">
-
-      <div class="card-inner">
-        <span class="kind"></span>
-		<img class="banner">
-        <h2>データ取得中...</h2>
-        <span class="meta">しばらくお待ちください...</span>
+  <div class="wrap">
+    <div class="head">
+      <div class="head-id">
+        <h1>ホーム</h1>
+        <span class="sub">すべてのサービスが、ここに。</span>
+      </div>
+      <div class="filters">
+        <button class="active">おすすめ/お気に入り</button>
+        <button>サボりツール</button>
+        <button>ゲーム</button>
+        <button>プロキシ</button>
+        <button>ニュース</button>
       </div>
     </div>
 
+    <div class="board">
+      <div class="card" style="--cat:#4a6b4f; --catsoft:#eeeeee;">
+        <div class="card-inner">
+          <span class="kind"></span>
+          <img class="banner" />
+          <h2>データ取得中...</h2>
+          <span class="meta">しばらくお待ちください...</span>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <script type="text/javascript">
+    const cardDatas = [];
 
-</div>
+    const colorList = [["News", "#4a6b4f"]];
 
-<script type="text/javascript">
+    cardDatas.push([
+      "News",
+      "ニューステスト配信",
+      "テストテキスト。",
+      "harezora",
+      null,
+      ["news"],
+    ]);
 
-	const cardDatas = []
-	
-	const colorList = [
-		["News","#4a6b4f"],
-	]
-
-	cardDatas.push([
-		"News",
-		"ニューステスト配信",
-		"テストテキスト。",
-		"harezora",
-		null,
-		["news"]
-	])
-
-/*
+    /*
  	[type,title,meta,author,img,[tags],date]
 */
 
-	function createCard(){
-		const defaultColor = "#12162e"
-		var str = ""
-		for(var data of cardDatas){
-			var color
-			if(colorList.includes(data[0])){
-				color = colorList[colorList.indexOf(data[0])]
-			}else{	
-				color = defaultColor
-			}
+    function createCard() {
+      const defaultColor = "#12162e";
+      var str = "";
+      for (var data of cardDatas) {
+        var color;
+        if (colorList.includes(data[0])) {
+          color = colorList[colorList.indexOf(data[0])];
+        } else {
+          color = defaultColor;
+        }
 
-			str += `    
+        str += `    
 			<div class="card" style="--cat:${color}; --catsoft:#eeeeee;">
       <div class="card-inner">
         <span class="kind">${data[0]}</span>
@@ -88,48 +79,60 @@ import HomeStyle from "../../../public/style/home.css";
         <span class="author kind">By ${data[3]}</span>
         <span class="meta">${data[2]}</span>
       </div>
-    </div>`
-		}
-
-	document.querySelector(".board").innerHTML = str
-	}
-createCard()
-</script>
-<script type="module">
-		let isAdmin = false
-import { getSecret } from "astro:env/server";
-
-	      const SPREADSHEET_ID = "192lM-4XxkDJF-TYhRFnKteMbqhgwcPyKIYnASHIl7ME";
-      const API_KEY = "AIzaSyCmVA13zyYwNurVKsDCWuSczupgyy5jza4";
-      const RANGE = "Admin!A2:A10000"; // 取得したい範囲
-      async function getSheetData() {
-        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-        try {
-          const response = await fetch(url);
-          const data = await response.json();
-          localStorage.setItem("cacheSheet", JSON.stringify(data.values));
-          console.log(data.values); // 二次元配列でデータが入っています
-          return data.values;
-        } catch (error) {
-          console.error("エラー:", error);
-		return null;
-		}
+    </div>`;
       }
 
-	  document.addEventListener("login",async (e)=>{
-		const data = e.detail
-		console.log(data.uid)
-		const list = await getSheetData()
-		if(typeof list == "object"){
-			for(var item of list){
-				if(item[0] == data.uid){
-					isAdmin = true 
-					break;
-				}
-			}	
-		}
-		console.log("Is admin?",isAdmin)
-	  })
+      document.querySelector(".board").innerHTML = str;
+    }
+    createCard();
+  </script>
+  <script type="module">
+    let isAdmin = false;
+    import { getSecret } from "astro:env/server";
 
-</script>
+    const SPREADSHEET_ID = "192lM-4XxkDJF-TYhRFnKteMbqhgwcPyKIYnASHIl7ME";
+    const API_KEY = "AIzaSyCmVA13zyYwNurVKsDCWuSczupgyy5jza4";
+    async function getSheetData(RANGE = "Admin!A2:A1000") {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        localStorage.setItem("cacheSheet", JSON.stringify(data.values));
+        console.log(data.values); // 二次元配列でデータが入っています
+        return data.values;
+      } catch (error) {
+        console.error("エラー:", error);
+        return null;
+      }
+    }
+
+    document.addEventListener("login", async (e) => {
+      const data = e.detail;
+      console.log(data.uid);
+    	var RANGE = "Admin!A2:A1000"; // 取得したい範囲
+      var list = await getSheetData(RANGE);
+      if (typeof list == "object") {
+        for (var item of list) {
+          if (item[0] == data.uid) {
+            isAdmin = true;
+            break;
+          }
+        }
+      }
+	  var isSignedUp = false
+    	RANGE = "Sheet1!A2:A1000000"; // 取得したい範囲
+      	list = await getSheetData(RANGE);
+      if (typeof list == "object") {
+        for (var item of list) {
+          if (item[0] == data.uid) {
+            isSignedUp = true;
+            break;
+          }
+        }
+      }
+
+      console.log("Are you signed up?", isSignedUp);
+      console.log("Are you an admin?", isAdmin);
+    });
+  </script>
 </Layout>
