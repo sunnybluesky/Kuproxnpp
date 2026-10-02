@@ -2,7 +2,6 @@
 import Header from "../../layouts/Header.astro";
 import Layout from "../../layouts/Layout.astro";
 import AccountSystem from "../../layouts/AccountSystem.astro";
-import HomeStyle from "/public/style/home.css";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
@@ -10,7 +9,7 @@ import HomeStyle from "/public/style/home.css";
 
 <Layout>
   <link rel="stylesheet" href="/style/LP.css" />
-  <link rel="stylesheet" href={HomeStyle} />
+  <link rel="stylesheet" href="/style/home.css" />
   <Header />
   <AccountSystem />
 

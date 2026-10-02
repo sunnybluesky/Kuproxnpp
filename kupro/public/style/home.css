@@ -31,7 +31,6 @@
     background: var(--bg-0);
     color: var(--text-0);
     font-family: var(--font-display);
-    padding: 36px 20px 60px;
   }
 
   .wrap { max-width: 1080px; margin: 0 auto; }
