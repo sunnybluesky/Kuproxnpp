@@ -19,7 +19,7 @@ import Home from "../assets/home.svg";
     <div class="Logined flex login-badge">
     
       <img class="icon" />
-      <span>ようこそ、<span class="username"></span>さん　</span>
+      <span class="welcome-text">ようこそ、<span class="username"></span>さん　</span>
    
         <img class="home-btn icon" src={Home.src}>
    
@@ -40,7 +40,7 @@ import Home from "../assets/home.svg";
   <div class="menu-overlay" id="menuOverlay">
     <nav class="menu-content">
       <ul>
-        <li><a href="/">ホーム</a></li>
+        <li><a href="/">サイトトップ</a></li>
         <li><a id="logout-btn">ログアウト</a></li>
       </ul>
     </nav>
@@ -79,6 +79,11 @@ import Home from "../assets/home.svg";
   menuLinks.forEach((link) => {
     link.addEventListener("click", toggleMenu);
   });
+  window.onload = function(){
+    if(window.innerWidth < 800){
+      document.querySelector(".welcome-text").style.display = "none"
+    }
+  }
 </script>
 <style>
   .Logined {
