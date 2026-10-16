@@ -14,6 +14,13 @@ import AccountSystem from "../../layouts/AccountSystem.astro";
   <AccountSystem />
 
   <div class="wrap">
+    
+    <!-- 管理者にのみ表示(DOMはtype=moduleで取得して！) -->
+    <div class="accordion-wrapper" id="ADMIN" class="ADMIN">
+      <h2>管理者メニュー  </h2>
+      <p><a href="https://script.google.com/macros/s/AKfycby5esnyPjpbXpoh9Omj9C2D4j-mRS_nqC88Xebhc2rjQyb_AF_FAY7XkPkR0O2WFIwL/exec" target="_blank">記事を作成する</a>（別ページに遷移します）</p>
+    </div>
+
     <div class="head">
       <div class="head-id">
         <h1>ホーム</h1>
@@ -114,24 +121,20 @@ import AccountSystem from "../../layouts/AccountSystem.astro";
         for (var item of list) {
           if (item[0] == data.uid) {
             isAdmin = true;
-            break;
-          }
-        }
-      }
-	  var isSignedUp = false
-    	RANGE = "Sheet1!A2:A1000000"; // 取得したい範囲
-      	list = await getSheetData(RANGE);
-      if (typeof list == "object") {
-        for (var item of list) {
-          if (item[0] == data.uid) {
-            isSignedUp = true;
+            enableFunctionsOfAdmin()
             break;
           }
         }
       }
 
-      console.log("Are you signed up?", isSignedUp);
+
+      function enableFunctionsOfAdmin(){
       console.log("Are you an admin?", isAdmin);
+        const adminContainer = document.getElementById("ADMIN")
+        console.log(adminContainer)
+
+        adminContainer.style.display = "block"
+      }      
     });
   </script>
 </Layout>

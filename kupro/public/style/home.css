@@ -33,6 +33,7 @@
     font-family: var(--font-display);
   }
 
+
   .wrap { max-width: 1080px; margin: 0 auto; }
 
   /* ---- header ---- */
@@ -154,4 +155,13 @@
 
   @media (prefers-reduced-motion: reduce) {
     .card { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+
+
+
+
+  #ADMIN{
+    display: none;
+    background-color: rgba(6, 60, 2, 0.052);
+    border-radius: 10px;
   }
