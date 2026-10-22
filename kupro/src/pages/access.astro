@@ -1,0 +1,164 @@
+---
+import Header from "../layouts/Header.astro";
+import Layout from "../layouts/Layout.astro";
+import AccountSystem from "../layouts/AccountSystem.astro";
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Layout>
+  <link rel="stylesheet" href="./style/LP.css" />
+  <Header />
+  <!-- FAQ Section  -->
+  <section id="faq">
+    <h3>よくある質問</h3>
+    <div class="faq-item">
+      <div class="faq-q ">系統図データ[簡易版]</div>
+      <div class="faq-a output-diagram-raw">それぞれのチームの規約を遵守してください。</div>
+    </div>
+  </section>
+  <script type="module">
+    import { check } from "astro/zod";
+    import { getSecret } from "astro:env/server";
+
+    const SPREADSHEET_ID = "192lM-4XxkDJF-TYhRFnKteMbqhgwcPyKIYnASHIl7ME";
+    const API_KEY = "AIzaSyCmVA13zyYwNurVKsDCWuSczupgyy5jza4";
+    async function getSheetData(RANGE = "Admin!A2:A1000") {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        localStorage.setItem("cacheSheet", JSON.stringify(data.values));
+        console.log(data.values); // 二次元配列でデータが入っています
+        return data.values;
+      } catch (error) {
+        console.error("エラー:", error);
+        return null;
+      }
+    }
+
+    function showSystemDiagram(str){
+        const tg = document.querySelector(".output-diagram-raw")
+        tg.innerHTML = str
+    }
+
+    class Team {
+      maxPoint = 0;
+      nowStr = "";
+      beforeStr = "<br>[<br>";
+      afterStr = "<br>]";
+      receiveDataCount = 0;
+      constructor(item) {
+        this.name = item[0];
+        this.id = item[1];
+        this.outline = item[2];
+        if (this.outline == "") {
+          this.outline = this.name + "だよ！";
+        }
+        if (item.length == 4) {
+          this.parentId = item[3];
+        } else {
+          this.parentId = null;
+        }
+        this.descendants = []; //「子孫」という意味。
+      }
+      sendData(str = "") {
+        const parentClass = teams.find((team) => team.id === this.parentId);
+        if (this.nowStr == "") {
+          this.nowStr = this.outline;
+        } else {
+          this.nowStr = this.outline + this.nowStr;
+        }
+        parentClass.receiveData(this.nowStr);
+      }
+      receiveData(str) {
+        this.receiveDataCount++;
+        this.nowStr += this.beforeStr + str + this.afterStr;
+
+        if (this.receiveDataCount == this.descendants[0].length) {
+          if (this.parentId == null) {
+            this.nowStr = this.name + this.nowStr;
+            showSystemDiagram(this.nowStr)
+            return 0;
+          }
+          this.sendData();
+        }
+      }
+    }
+
+    const teamData = await getSheetData("Teams!A2:D10000");
+    const teams = [];
+    for (var i = 0; i < teamData.length; i++) {
+      var item = teamData[i];
+      teams.push(new Team(item));
+    }
+    console.log(teams);
+
+    for (var i = 0; i < teamData.length; i++) {
+      var item = teams[i];
+      item.descendants.push([]);
+      if (item.parentId == null) {
+      }
+      const ls = teams.filter((t) => t.parentId === item.id); //全体から親idを検索
+      for (var t of ls) {
+        var tg = teams.find((team) => team.id === t.id);
+        console.log(item.id, "の傘下として登録：", tg.id);
+        item.descendants[item.descendants.length - 1].push(tg.id);
+      }
+    }
+    while (true) {
+      let checkingCounter = 0;
+      for (var i = 0; i < teamData.length; i++) {
+        var item = teams[i];
+        item.descendants.push([]);
+        if (item.parentId == null) {
+        }
+        for (var j = 0; j < item.descendants.length; j++) {
+          var tgArr = item.descendants[item.descendants.length - 2];
+          const ls = teams.filter((t) => t.parentId === tgArr[j]); //全体から親idを検索
+          for (var t of ls) {
+            var tg = teams.find((team) => team.id === t.id);
+            console.log(item.id, "の傘下として登録：", tg.id);
+            checkingCounter++;
+            item.descendants[item.descendants.length - 1].push(tg.id);
+          }
+        }
+      }
+      if (checkingCounter == 0) {
+        break;
+      }
+    }
+    var max = 0;
+    for (var j = 0; j < teams.length; j++) {
+      var item = teams[j];
+      var maxPoint = 0;
+      for (var i = 0; i < item.descendants.length - 1; i++) {
+        if (item.descendants[i + 1].length == 0) {
+          break;
+        } else {
+          maxPoint++;
+        }
+      }
+      if (max < maxPoint) {
+        max = maxPoint;
+      }
+      item.maxPoint = maxPoint;
+    }
+    const topTeams = [];
+    for (var i = 0; i < teams.length; i++) {
+      if (teams[i].maxPoint == max) {
+        topTeams.push(i);
+      }
+    }
+    for (var i = 0; i < teams.length; i++) {
+      if (teams[i].descendants[0].length == 0) {
+        teams[i].sendData();
+      }
+    }
+
+    console.log(teams);
+    console.log(topTeams);
+  </script>
+  <AccountSystem />
+</Layout>
