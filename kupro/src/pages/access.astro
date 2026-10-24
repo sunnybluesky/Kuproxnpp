@@ -46,15 +46,15 @@ import AccountSystem from "../layouts/AccountSystem.astro";
     class Team {
       maxPoint = 0;
       nowStr = "";
-      beforeStr = "<br>[<br>";
-      afterStr = "<br>]";
+      beforeStr = "<ul><li>";
+      afterStr = "</li></ul>";
       receiveDataCount = 0;
       constructor(item) {
         this.name = item[0];
         this.id = item[1];
         this.outline = item[2];
         if (this.outline == "") {
-          this.outline = this.name + "だよ！";
+          this.outline = this.name + "";
         }
         if (item.length == 4) {
           this.parentId = item[3];
