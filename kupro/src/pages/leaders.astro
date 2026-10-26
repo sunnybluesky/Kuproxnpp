@@ -1,0 +1,23 @@
+---
+import Header from '../layouts/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import AccountSystem from '../layouts/AccountSystem.astro';
+
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Layout>
+	<link rel="stylesheet" href="/style/LP.css">
+	<Header />
+         <!-- FAQ Section  -->
+        <section id="faq">
+            <h1>Leader</h1>
+            <div class="faq-item">
+                <div class="faq-q"><h2>Owner: suzuzora <span style="font-size:small">since Apr 2025</span> </h2></div>
+                <div class="faq-q"><h3>Sub-owner: harezora <span style="font-size:small">since Jul 2026</span> </h3></div>
+            </div>
+        </section>
+	<AccountSystem />
+</Layout>
