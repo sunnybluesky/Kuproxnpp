@@ -42,15 +42,6 @@
 
     const colorList = [["News", "#4a6b4f"]];
 
-    cardDatas.push([
-      "News",
-      "ニューステスト配信",
-      "テストテキスト。",
-      "harezora",
-      null,
-      ["news"],
-    ]);
-
     /*
  	[type,title,meta,author,img,[tags],date]
 */
@@ -68,6 +59,7 @@
 
         str += `    
 			<div class="card" style="--cat:${color}; --catsoft:#eeeeee;">
+      <a href="./news?n=${data[6]}">
       <div class="card-inner">
         <span class="kind">${data[0]}</span>
 		<img class="banner">
@@ -81,4 +73,58 @@
       document.querySelector(".board").innerHTML = str;
     }
     createCard();
-  </script><script type="module">var e=!1,t=`192lM-4XxkDJF-TYhRFnKteMbqhgwcPyKIYnASHIl7ME`,n=`AIzaSyCmVA13zyYwNurVKsDCWuSczupgyy5jza4`;async function r(e=`Admin!A2:A1000`){let r=`https://sheets.googleapis.com/v4/spreadsheets/${t}/values/${e}?key=${n}`;try{let e=await(await fetch(r)).json();return localStorage.setItem(`cacheSheet`,JSON.stringify(e.values)),console.log(e.values),e.values}catch(e){return console.error(`エラー:`,e),null}}document.addEventListener(`login`,async t=>{let n=t.detail;console.log(n.uid);var i=await r(`Admin!A2:A1000`);if(typeof i==`object`){for(var a of i)if(a[0]==n.uid){e=!0,o();break}}function o(){console.log(`Are you an admin?`,e);let t=document.getElementById(`ADMIN`);console.log(t),t.style.display=`block`}}),await r(``);</script></body></html>
+
+    function formatRelativeTime(ts1, ts2) {
+  if (typeof ts1 !== "number" || typeof ts2 !== "number" || Number.isNaN(ts1) || Number.isNaN(ts2)) {
+    throw new Error("有効な数値のタイムスタンプを指定してください。");
+  }
+
+  // 新しい方（大きい値）を基準にし、経過ミリ秒を計算
+  const newer = Math.max(ts1, ts2);
+  const older = Math.min(ts1, ts2);
+  const diffMs = newer - older;
+
+  // 差がほぼない場合
+  if (diffMs < 60 * 1000) {
+    return "たった今";
+  }
+
+  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+  if (diffMinutes < 60) {
+    return `${diffMinutes}分前`;
+  }
+
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  if (diffHours < 24) {
+    return `${diffHours}時間前`;
+  }
+
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  // 30日未満は「〇〇日前」
+  if (diffDays < 30) {
+    return `${diffDays}日前`;
+  }
+
+  // 30日以上〜365日未満は「〇〇ヶ月前」（1ヶ月 = 30日換算）
+  const diffMonths = Math.floor(diffDays / 30);
+  if (diffMonths < 12) {
+    return `${diffMonths}ヶ月前`;
+  }
+
+  // 365日以上は「〇〇年前」（1年 = 365日換算）
+  const diffYears = Math.floor(diffDays / 365);
+  return `${diffYears}年前`;
+}
+
+// --- 動作例 ---
+const baseTime = new Date("2026-11-26T18:00:00+09:00").getTime();
+
+/*
+
+console.log(formatRelativeTime(baseTime, baseTime - 3 * 60 * 60 * 1000));
+// -> "3時間前"
+
+*/
+
+
+  </script><script type="module">var e=!1,t=`192lM-4XxkDJF-TYhRFnKteMbqhgwcPyKIYnASHIl7ME`,n=`AIzaSyCmVA13zyYwNurVKsDCWuSczupgyy5jza4`;async function r(e=`Admin!A2:A1000`){let r=`https://sheets.googleapis.com/v4/spreadsheets/${t}/values/${e}?key=${n}`;try{let e=await(await fetch(r)).json();return localStorage.setItem(`cacheSheet`,JSON.stringify(e.values)),console.log(e.values),e.values}catch(e){return console.error(`エラー:`,e),null}}document.addEventListener(`login`,async t=>{let n=t.detail;console.log(n.uid);var i=await r(`Admin!A2:A1000`);if(typeof i==`object`){for(var a of i)if(a[0]==n.uid){e=!0,o();break}}function o(){console.log(`Are you an admin?`,e);let t=document.getElementById(`ADMIN`);console.log(t),t.style.display=`block`}});for(var i=await r(`News!A2:A10000`),a=[],o=0;o<i.length;o++)a.push(JSON.parse(i[o]).data),a[o].number=o+1;a.reverse(),console.log(a);for(var s of a){var c=formatRelativeTime(baseTime,s.updated);cardDatas.push([`News`,s.title,c,`Kuproxnpp運営`,null,[`news`],s.number])}createCard();</script></body></html>
