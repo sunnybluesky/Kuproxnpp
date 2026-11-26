@@ -52,15 +52,6 @@ import AccountSystem from "../../layouts/AccountSystem.astro";
 
     const colorList = [["News", "#4a6b4f"]];
 
-    cardDatas.push([
-      "News",
-      "ニューステスト配信",
-      "テストテキスト。",
-      "harezora",
-      null,
-      ["news"],
-    ]);
-
     /*
  	[type,title,meta,author,img,[tags],date]
 */
@@ -78,6 +69,7 @@ import AccountSystem from "../../layouts/AccountSystem.astro";
 
         str += `    
 			<div class="card" style="--cat:${color}; --catsoft:#eeeeee;">
+      <a href="./news?n=${data[6]}">
       <div class="card-inner">
         <span class="kind">${data[0]}</span>
 		<img class="banner">
@@ -91,6 +83,60 @@ import AccountSystem from "../../layouts/AccountSystem.astro";
       document.querySelector(".board").innerHTML = str;
     }
     createCard();
+
+    function formatRelativeTime(ts1, ts2) {
+  if (typeof ts1 !== "number" || typeof ts2 !== "number" || Number.isNaN(ts1) || Number.isNaN(ts2)) {
+    throw new Error("有効な数値のタイムスタンプを指定してください。");
+  }
+
+  // 新しい方（大きい値）を基準にし、経過ミリ秒を計算
+  const newer = Math.max(ts1, ts2);
+  const older = Math.min(ts1, ts2);
+  const diffMs = newer - older;
+
+  // 差がほぼない場合
+  if (diffMs < 60 * 1000) {
+    return "たった今";
+  }
+
+  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+  if (diffMinutes < 60) {
+    return `${diffMinutes}分前`;
+  }
+
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  if (diffHours < 24) {
+    return `${diffHours}時間前`;
+  }
+
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  // 30日未満は「〇〇日前」
+  if (diffDays < 30) {
+    return `${diffDays}日前`;
+  }
+
+  // 30日以上〜365日未満は「〇〇ヶ月前」（1ヶ月 = 30日換算）
+  const diffMonths = Math.floor(diffDays / 30);
+  if (diffMonths < 12) {
+    return `${diffMonths}ヶ月前`;
+  }
+
+  // 365日以上は「〇〇年前」（1年 = 365日換算）
+  const diffYears = Math.floor(diffDays / 365);
+  return `${diffYears}年前`;
+}
+
+// --- 動作例 ---
+const baseTime = new Date("2026-11-26T18:00:00+09:00").getTime();
+
+/*
+
+console.log(formatRelativeTime(baseTime, baseTime - 3 * 60 * 60 * 1000));
+// -> "3時間前"
+
+*/
+
+
   </script>
   <script type="module">
     let isAdmin = false;
@@ -138,6 +184,38 @@ import AccountSystem from "../../layouts/AccountSystem.astro";
     });
 
     //News取得
-    var newsData = await getSheetData("")
+    const FetchedNewsData = await getSheetData("News!A2:A10000")
+    const newsData = []
+    for(var i=0;i<FetchedNewsData.length;i++){
+      newsData.push(JSON.parse(FetchedNewsData[i]).data)
+      newsData[i].number = i+1
+    }
+    newsData.reverse()
+    console.log(newsData)
+
+    for(var item of newsData){
+    var time = formatRelativeTime(baseTime, item.updated) // 何日前？を表示する
+    cardDatas.push([
+      "News",
+      item.title,
+      time,
+      "Kuproxnpp運営",
+      null,
+      ["news"],
+      item.number
+    ]);
+    }
+    createCard();
+
+    /*
+    cardDatas.push([
+      "News",
+      "ニューステスト配信",
+      "テストテキスト。",
+      "harezora",
+      null,
+      ["news"],
+    ]);
+    */
   </script>
 </Layout>

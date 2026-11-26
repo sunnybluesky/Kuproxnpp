@@ -49,7 +49,8 @@ import AccountSystem from '../layouts/AccountSystem.astro';
                             dominant-baseline="central"
                             font-size="20"
                             fill="#333"
-                            font-family="HinaMincho">
+                            font-family="HinaMincho"
+                            class="Message404">
                             お探しのページは見つかりませんでした。
                         </text>
                         <defs>
@@ -65,5 +66,35 @@ import AccountSystem from '../layouts/AccountSystem.astro';
                 </div>
             </div>
         </div>
+          <script type="module">
+    import { check } from "astro/zod";
+    import { getSecret } from "astro:env/server";
+
+    const SPREADSHEET_ID = "192lM-4XxkDJF-TYhRFnKteMbqhgwcPyKIYnASHIl7ME";
+    const API_KEY = "AIzaSyCmVA13zyYwNurVKsDCWuSczupgyy5jza4";
+    async function getSheetData(RANGE = "Admin!A2:A1000") {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        localStorage.setItem("cacheSheet", JSON.stringify(data.values));
+        console.log(data.values); // 二次元配列でデータが入っています
+        return data.values;
+      } catch (error) {
+        console.error("エラー:", error);
+        return null;
+      }
+    }
+
+    const requestedPath = location.pathname.split("/")[1]
+
+    const data = await getSheetData("HiddenMessages!A2:B1000")
+    const index = data[0].indexOf(requestedPath)
+    console.log(index)
+    if(index != -1){
+        var text = data[index][1]
+        document.querySelector(".Message404").innerHTML = text
+    }
+</script>
 	<AccountSystem />
 </Layout>
